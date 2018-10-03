@@ -10,6 +10,7 @@
       )
   )
 
+;prueba marik xd
 (define (in)
   (define x (read))
   (if (>= x 0)
@@ -19,6 +20,3 @@
   )
 
 (in)
-
-
-
