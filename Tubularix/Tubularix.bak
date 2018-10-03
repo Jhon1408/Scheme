@@ -1,0 +1,172 @@
+;;-----------------------------------------;;
+(require (lib "graphics.ss" "graphics"))
+(open-graphics)
+;;-----------------------------------------;;
+
+;;-----------------------------------------;;
+(define (colores x)
+  (cond
+    [(= x 0) "green"]
+    [(= x 1) "blue"]
+    [(= x 2) "red"]
+    [(= x 3) "yellow"]
+    [(= x 4) "purple"]
+   )
+ )
+;;-----------------------------------------;;
+(define (getclickposn v)
+  (mouse-click-posn (get-mouse-click v))
+  )
+
+ 
+(define (iniciar)
+  (define ventana1 (open-viewport "Tubularix" 1024 720))
+  ((draw-viewport ventana1) "black")
+  (botones ventana1 1024 720 0)
+  (jugar/salir ventana1 1024 720 (getclickposn ventana1) 0)
+  )
+
+(define (botones ventana x y cont)
+  ((draw-rectangle ventana) (make-posn (- (/ x 2) 50) (- (/ y 2) 50)) 100 50 "white")
+  ((draw-rectangle ventana) (make-posn (- (/ x 2) 50) (+ (/ y 2) 40)) 100 50 "white")
+  ((draw-pixmap ventana) "tubularixlogo.png" (make-posn 212 50) "white")
+  ((draw-pixmap ventana) "jugar.png" (make-posn (- (/ x 2) 49) (- (/ y 2) 49)))
+  ((draw-pixmap ventana) "salir.png" (make-posn (- (/ x 2) 49) (+ (/ y 2) 41)))
+  )
+
+(define (jugar/salir ventana x y click cont)
+  (if (<= cont 100)
+      (if (and (and (>= (posn-x click) 462) (<= (posn-x click) 562)) (and (>= (posn-y click) 310) (<= (posn-y click) 360)))
+          (begin
+            (clear-viewport ventana)
+            ((draw-viewport ventana) "black")
+            (iniciar-tubularix ventana 0)
+            )
+          (if (and (and (>= (posn-x click) 462) (<= (posn-x click) 562)) (and (>= (posn-y click) 400) (<= (posn-y click) 450)))
+              (begin
+                (close-viewport ventana)
+                )
+              (jugar/salir ventana x y (getclickposn ventana) (+ 1 cont))
+              )
+          )
+      (close-viewport ventana)
+      )
+  )
+
+
+
+(define (iniciar-tubularix ventana cont)
+  ;cuadro de siguiente
+  ((draw-rectangle ventana) (make-posn 900 30) 101 101 "white")
+  ((draw-line ventana) (make-posn 950 30) (make-posn 950 130) "white")
+  ((draw-line ventana) (make-posn 900 80) (make-posn 1000 80) "white")
+  ((draw-string ventana) (make-posn 900 28) "Siguiente:" "white")
+
+
+  
+  ;mini tubularix
+  ((draw-rectangle ventana) (make-posn 820 420) 180 240 "white")
+  
+  ;lines
+  (begin
+    
+    ;lines horizontales
+    ((draw-line ventana) (make-posn 850 420) (make-posn 850 659) "white")
+    ((draw-line ventana) (make-posn 880 420) (make-posn 880 659) "white")
+    ((draw-line ventana) (make-posn 910 420) (make-posn 910 659) "white")
+    ((draw-line ventana) (make-posn 940 420) (make-posn 940 659) "white")
+    ((draw-line ventana) (make-posn 970 420) (make-posn 970 659) "white")
+
+    ;lineas verticales
+    ((draw-line ventana) (make-posn 820 450) (make-posn 999 450) "white")
+    ((draw-line ventana) (make-posn 820 480) (make-posn 999 480) "white")
+    ((draw-line ventana) (make-posn 820 510) (make-posn 999 510) "white")
+    ((draw-line ventana) (make-posn 820 540) (make-posn 999 540) "white")
+    ((draw-line ventana) (make-posn 820 570) (make-posn 999 570) "white")
+    ((draw-line ventana) (make-posn 820 600) (make-posn 999 600) "white")
+    ((draw-line ventana) (make-posn 820 630) (make-posn 999 630) "white")
+    
+    )
+
+  
+  ;poligono central                      1                 2                   3                     4                  5                   6
+  ((draw-polygon ventana) (list (make-posn 80 130) (make-posn 100 100) (make-posn 130 100) (make-posn 150 130) (make-posn 130 160) (make-posn 100 160)) (make-posn 300 240) "white")
+
+  ;poligono 0
+  ((draw-polygon ventana) (list (make-posn 62.5 130) (make-posn 91 82.5) (make-posn 138.5 82.5) (make-posn 167.5 130) (make-posn 139 180) (make-posn 91 180)) (make-posn 300 240) "white")
+  
+  ;poligono 1
+  ((draw-polygon ventana) (list (make-posn 45 130) (make-posn 82 65) (make-posn 147 65) (make-posn 185 130) (make-posn 147 200) (make-posn 82 200)) (make-posn 300 240) "white")
+  
+  ;poligono 2
+   ((draw-polygon ventana) (list (make-posn 10 130) (make-posn 65 30) (make-posn 165 30) (make-posn 220 130) (make-posn 165 230) (make-posn 65 230)) (make-posn 300 240) "white")
+
+  ;poligono 3
+  ((draw-polygon ventana) (list (make-posn -40 130) (make-posn 45 -5) (make-posn 185 -5) (make-posn 270 130) (make-posn 185 270) (make-posn 45 270)) (make-posn 300 240) "white")
+  
+  ;poligono 4
+  ((draw-polygon ventana) (list (make-posn -90 130) (make-posn 20 -55) (make-posn 210 -55) (make-posn 320 130) (make-posn 210 325) (make-posn 20 325)) (make-posn 300 240) "white")
+
+  ;poligono 5
+  ((draw-polygon ventana) (list (make-posn -140 130) (make-posn -5 -105) (make-posn 235 -105) (make-posn 370 130) (make-posn 235 380) (make-posn -5 380)) (make-posn 300 240) "white")
+  
+  ;poligono 6
+  ((draw-polygon ventana) (list (make-posn -190 130) (make-posn -30 -155) (make-posn 260 -155) (make-posn 420 130) (make-posn 260 430) (make-posn -30 430)) (make-posn 300 240) "white")
+
+
+  
+  ;lines separadoras
+  (sleep 0.2)
+  ((draw-line ventana) (make-posn 380 370) (make-posn 110 370) "white")
+  (sleep 0.2)
+  ((draw-line ventana) (make-posn 400 340) (make-posn 270 85) "white")
+  (sleep 0.2)
+  ((draw-line ventana) (make-posn 430 340) (make-posn 560 85) "white")
+  (sleep 0.2)
+  ((draw-line ventana) (make-posn 450 370) (make-posn 720 370) "white")
+  (sleep 0.2)
+  ((draw-line ventana) (make-posn 430 400) (make-posn 560 670) "white")
+  (sleep 0.2)
+  ((draw-line ventana) (make-posn 400 400) (make-posn 270 670) "white")  
+
+  (sleep 1)
+  (start-game ventana (getclickposn ventana) (getclickposn ventana) 1)
+
+
+  
+  )
+
+(define (start-game ventana clickx clicky cont)
+  (if (<= cont 48)
+      (begin
+        (display cont)
+        (displayln ": ")
+        
+        (display (posn-x clickx))
+        (display " - ")
+        (displayln (posn-y clickx))
+        
+        (display (posn-x clicky))
+        (display " - ")
+        (displayln (posn-y clicky))
+        
+        (start-game ventana (getclickposn ventana) (getclickposn ventana) (+ 1 cont))
+        )
+      (display "final")
+      )
+  )
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+(iniciar)
